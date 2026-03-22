@@ -1,4 +1,4 @@
-import type { FlagCode } from "@flag-list/flags";
+import type { FlagCode } from "@flagolio/flags";
 
 /**
  * Class-based flags:

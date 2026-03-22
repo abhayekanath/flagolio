@@ -1,4 +1,4 @@
-import { FLAG_CODES } from "@flag-list/flags";
+import { FLAG_CODES } from "@flagolio/flags";
 
 export type FlagAssetMaps = {
   map43: Record<string, string>;

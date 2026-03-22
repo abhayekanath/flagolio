@@ -1,7 +1,25 @@
 ---
-import { FLAG_CODES } from "@flag-list/flags";
+import { FLAG_CODES } from "@flagolio/flags";
 
-import flagsPkg from "../../../../packages/flags/package.json";
+import pkg from "../../package.json";
+
+interface RootPkg {
+  name: string;
+  version: string;
+  license?: string;
+  description?: string;
+  displayNpmPackage?: string;
+  repository?: { url?: string } | string;
+}
+
+const root = pkg as RootPkg;
+const flagsPkg = {
+  name: root.displayNpmPackage ?? root.name,
+  version: root.version,
+  license: root.license ?? "MIT",
+  description: root.description ?? "",
+  repository: root.repository,
+};
 
 import BaseLayout from "../components/layout/BaseLayout.astro";
 import DocsModal from "../components/docs/DocsModal.astro";

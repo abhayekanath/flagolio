@@ -11,7 +11,8 @@ export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        "@flags": resolve(__dirname, "../../packages/flags/svg"),
+        "@flags": resolve(__dirname, "flags/svg"),
+        "@flagolio/flags": resolve(__dirname, "flags/dist/index.js"),
       },
     },
   },

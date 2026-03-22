@@ -1,20 +1,26 @@
-# flag-list
+# flagolio
 
-Monorepo:
+Single Astro app with flag SVG assets and TypeScript helpers in **`flags/`** (build output: `flags/dist/`, consumed as `@flagolio/flags` via Vite alias).
 
-| Package / app        | Description |
-| -------------------- | ----------- |
-| **`@flag-list/flags`** | Publishable npm package: SVG flags (4:3, 1:1, round) + TypeScript API. |
-| **`apps/web`**       | Astro demo site (not published as a library). See **[apps/web/README.md](apps/web/README.md)** for folder layout (`components/`, `styles/`, `lib/`, `scripts/`). |
+| Area | Contents |
+| ---- | -------- |
+| **`src/`** | Astro pages, components, styles, client scripts |
+| **`flags/`** | SVG trees (`svg/4x3`, `1x1`, `round`), TS source, generate scripts — see **[flags/README.md](flags/README.md)** for API notes |
 
 ## Development
 
 ```bash
 npm install
-npm run build
 npm run dev
 ```
 
-## Using the flags package
+`dev` runs code/SVG generation and the TypeScript build for `flags/`, then starts Astro.
 
-See **[packages/flags/README.md](packages/flags/README.md)** for install commands, API (`FLAG_CODES`, `flagAssetUrl`, `getFlagPath`, `isFlagCode`), and **how to publish** `@flag-list/flags` to npm.
+```bash
+npm run build
+npm run preview
+```
+
+## Library API
+
+See **[flags/README.md](flags/README.md)** for `FLAG_CODES`, `flagAssetUrl`, `getFlagPath`, `isFlagCode`, and publishing notes if you split the library to npm again.

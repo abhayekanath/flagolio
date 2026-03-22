@@ -1,4 +1,4 @@
-# @flag-list/flags
+# @flagolio/flags
 
 SVG country and region flags in **4:3**, **1:1**, and **round 1:1** aspect ratios, plus TypeScript helpers (`FLAG_CODES`, path/URL resolvers, type guard).
 
@@ -7,19 +7,19 @@ SVG country and region flags in **4:3**, **1:1**, and **round 1:1** aspect ratio
 **npm**
 
 ```bash
-npm install @flag-list/flags
+npm install @flagolio/flags
 ```
 
 **Yarn**
 
 ```bash
-yarn add @flag-list/flags
+yarn add @flagolio/flags
 ```
 
 **pnpm**
 
 ```bash
-pnpm add @flag-list/flags
+pnpm add @flagolio/flags
 ```
 
 Requires **Node.js ≥ 18** (ESM).
@@ -29,7 +29,7 @@ Requires **Node.js ≥ 18** (ESM).
 ### List all flag ids
 
 ```ts
-import { FLAG_CODES, type FlagCode } from "@flag-list/flags";
+import { FLAG_CODES, type FlagCode } from "@flagolio/flags";
 
 // readonly tuple of ids (e.g. "us", "gb", "es-ct", "un", …)
 console.log(FLAG_CODES.length);
@@ -38,7 +38,7 @@ console.log(FLAG_CODES.length);
 ### Check if a string is a known id
 
 ```ts
-import { isFlagCode } from "@flag-list/flags";
+import { isFlagCode } from "@flagolio/flags";
 
 if (isFlagCode(code)) {
   // code is FlagCode
@@ -50,7 +50,7 @@ if (isFlagCode(code)) {
 Uses `import.meta.url` so the SVG resolves next to the published package:
 
 ```ts
-import { flagAssetUrl } from "@flag-list/flags";
+import { flagAssetUrl } from "@flagolio/flags";
 
 const src43 = flagAssetUrl("us", "4x3");
 const src11 = flagAssetUrl("us", "1x1");
@@ -63,7 +63,7 @@ Use `src43` in `<img src={...} />` or CSS `url(...)`.
 
 ```ts
 import { readFile } from "node:fs/promises";
-import { getFlagPath } from "@flag-list/flags";
+import { getFlagPath } from "@flagolio/flags";
 
 const svg = await readFile(getFlagPath("de", "4x3"), "utf8");
 ```
@@ -73,19 +73,19 @@ const svg = await readFile(getFlagPath("de", "4x3"), "utf8");
 Subpath exports map to files under `svg/`:
 
 ```ts
-import usFlag from "@flag-list/flags/svg/4x3/us.svg";
+import usFlag from "@flagolio/flags/svg/4x3/us.svg";
 ```
 
 With bundlers that support asset imports, add the query your toolchain expects, e.g. Vite:
 
 ```ts
-import usUrl from "@flag-list/flags/svg/4x3/us.svg?url";
+import usUrl from "@flagolio/flags/svg/4x3/us.svg?url";
 ```
 
 You can confirm resolution with:
 
 ```ts
-import.meta.resolve("@flag-list/flags/svg/4x3/us.svg");
+import.meta.resolve("@flagolio/flags/svg/4x3/us.svg");
 ```
 
 ### Ratios
@@ -96,41 +96,23 @@ import.meta.resolve("@flag-list/flags/svg/4x3/us.svg");
 | `"1x1"`     | `svg/1x1/`    | Square                |
 | `"round"`   | `svg/round/`  | Circular mask in SVG |
 
-## Publishing this package (maintainers)
+## Publishing as an npm package (maintainers)
 
-From the **monorepo root** (this repo):
+This repo is a single app; to publish **`@flagolio/flags`** again you would add a `package.json` under `flags/` (or use npm `files` from root) and point `main`/`types` at `flags/dist`. Until then:
 
-1. **Build** (runs automatically on publish via `prepublishOnly`):
-
-   ```bash
-   npm run build -w @flag-list/flags
-   ```
-
-2. **Log in** to npm (one-time per machine):
+1. **Build** the library output:
 
    ```bash
-   npm login
+   npm run build:flags
    ```
 
-3. **Bump the version** in `packages/flags/package.json` (`npm version patch|minor|major` inside that package, or edit by hand).
+2. **Log in** to npm (one-time per machine): `npm login`
 
-4. **Publish** the scoped package (first publish must allow public scope):
+3. **Bump the version** in the package manifest you publish from.
 
-   ```bash
-   npm publish -w @flag-list/flags --access public
-   ```
+4. **Publish** the scoped package (first publish must allow public scope), e.g. `npm publish --access public` from the package root you configure.
 
-   **Yarn (Berry / modern):**
-
-   ```bash
-   yarn workspace @flag-list/flags npm publish --access public
-   ```
-
-5. **Dry run** (inspect tarball without uploading):
-
-   ```bash
-   npm pack -w @flag-list/flags --dry-run
-   ```
+5. **Dry run:** `npm pack --dry-run`
 
 Update `repository.url` and the copyright year in `LICENSE` before publishing if they differ from the placeholders.
 
