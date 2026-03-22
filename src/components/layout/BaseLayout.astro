@@ -1,4 +1,5 @@
 ---
+import "boxicons/css/boxicons.min.css";
 import "lenis/dist/lenis.css";
 
 import "../../styles/global.css";
@@ -7,35 +8,82 @@ interface Props {
   title: string;
   description: string;
   flagIconCss: string;
+  /** Absolute canonical URL for this page */
+  canonicalURL: URL | string;
+  /** Optional image for Open Graph / Twitter (absolute URL recommended) */
+  ogImage?: URL | string;
+  /** JSON-LD object (serialized) */
+  jsonLd?: Record<string, unknown>;
+  /** Set true to disallow indexing (e.g. staging) */
+  noindex?: boolean;
+  keywords?: string;
 }
 
-const { title, description, flagIconCss } = Astro.props;
+const {
+  title,
+  description,
+  flagIconCss,
+  canonicalURL,
+  ogImage,
+  jsonLd,
+  noindex = false,
+  keywords,
+} = Astro.props;
+
+const canonical =
+  typeof canonicalURL === "string" ? canonicalURL : canonicalURL.href;
+
+const origin = new URL(canonical).origin;
+const defaultOgImage = new URL("/favicon.svg", origin).href;
+const ogImageUrl =
+  ogImage === undefined
+    ? defaultOgImage
+    : typeof ogImage === "string"
+      ? ogImage
+      : ogImage.href;
+
+const robots = noindex
+  ? "noindex, nofollow"
+  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
 ---
 
-<html lang="en" class="lenis lenis-smooth" data-theme="system">
+<html lang="en" class="lenis lenis-smooth">
   <head>
-    <script is:inline>
-      (function () {
-        try {
-          var v = localStorage.getItem("flags-theme");
-          if (v === "light" || v === "dark" || v === "system") {
-            document.documentElement.setAttribute("data-theme", v);
-          }
-        } catch (e) {}
-      })();
-    </script>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords ? <meta name="keywords" content={keywords} /> : null}
+    <meta name="robots" content={robots} />
+    <meta name="author" content="flagolio" />
+    <meta name="theme-color" content="#0f0f0f" />
+
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+    <link rel="alternate" hreflang="en" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="flagolio" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content="flagolio favicon" />
+
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <title>{title}</title>
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {jsonLd ? (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    ) : null}
+
     <style set:html={flagIconCss}></style>
   </head>
   <body>

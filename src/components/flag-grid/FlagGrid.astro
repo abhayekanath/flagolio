@@ -1,11 +1,8 @@
 ---
-import "../../styles/flag-grid.css";
-
 import type { FlagGridItem } from "../../lib/flagAssetMaps";
 import { getFlagContinent } from "../../lib/flagContinent";
 
 import FlagCard from "./FlagCard.astro";
-import FlagGridHeader from "./FlagGridHeader.astro";
 import FlagGridToolbar from "./FlagGridToolbar.astro";
 
 interface Props {
@@ -13,21 +10,16 @@ interface Props {
 }
 
 const { items } = Astro.props;
-
-const lede = `${items.length} entries · search · hover a flag for name and code`;
 ---
 
-<div class="page">
-  <FlagGridHeader lede={lede} />
-  <FlagGridToolbar />
-  <div class="grid" id="grid" role="tabpanel" aria-labelledby="tab-4x3">
-    {
-      items.map((item) => (
-        <FlagCard
-          {...item}
-          continent={getFlagContinent(item.code)}
-        />
-      ))
-    }
-  </div>
+<FlagGridToolbar />
+<div class="grid w-full pb-52" id="grid" role="tabpanel" aria-labelledby="tab-4x3">
+  {
+    items.map((item) => (
+      <FlagCard
+        {...item}
+        continent={getFlagContinent(item.code)}
+      />
+    ))
+  }
 </div>

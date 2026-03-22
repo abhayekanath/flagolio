@@ -22,13 +22,12 @@ const flagsPkg = {
 };
 
 import BaseLayout from "../components/layout/BaseLayout.astro";
-import DocsModal from "../components/docs/DocsModal.astro";
-import HomeHero from "../components/home/HomeHero.astro";
-import FlagGrid from "../components/flag-grid/FlagGrid.astro";
+import HomeLanding from "../components/home/HomeLanding.astro";
 
 import { buildFlagAssetMaps, buildFlagGridItems } from "../lib/flagAssetMaps";
 import { buildFlagIconCss } from "../lib/flagIconCss";
 import { getFlagLabel } from "../lib/flagLabel";
+import { buildHomeJsonLd, resolveCanonicalUrl } from "../lib/seo";
 
 const all = import.meta.glob(
   "@flags/**/*.svg",
@@ -39,16 +38,67 @@ const maps = buildFlagAssetMaps(all);
 const items = buildFlagGridItems(maps, getFlagLabel);
 const flagIconCss = buildFlagIconCss(FLAG_CODES, maps.map43, maps.map11, maps.mapRound);
 
-const pageTitle = `${flagsPkg.name} · SVG flags for npm`;
-const pageDesc = flagsPkg.description;
+if (!Astro.site) {
+  throw new Error("Set `site` in `astro.config.mjs` (or PUBLIC_SITE_URL) for canonical URLs and sitemap.");
+}
+
+const canonicalURL = resolveCanonicalUrl(Astro.site, Astro.url.pathname);
+const siteRoot = resolveCanonicalUrl(Astro.site, "/").href.replace(/\/$/, "");
+
+const repoRaw =
+  flagsPkg.repository && typeof flagsPkg.repository === "object" && flagsPkg.repository.url
+    ? String(flagsPkg.repository.url)
+    : "";
+const codeRepository = repoRaw.replace(/^git\+/, "").replace(/\.git$/, "") || undefined;
+
+const pageTitle = `${flagsPkg.name} · SVG country & region flag SVGs for npm`;
+const pageDesc = `${flagsPkg.description} Browse ${FLAG_CODES.length}+ flag SVGs in 4:3, 1:1, and round formats. TypeScript helpers: FLAG_CODES, flagAssetUrl, getFlagPath. Install with npm.`;
+
+const jsonLd = buildHomeJsonLd({
+  siteUrl: siteRoot,
+  name: flagsPkg.name,
+  description: pageDesc,
+  version: flagsPkg.version,
+  license: flagsPkg.license,
+  codeRepository,
+});
+
+const keywords = [
+  "country flags",
+  "SVG flags",
+  "npm",
+  "TypeScript",
+  "ISO flags",
+  "4:3",
+  "1:1",
+  "round flags",
+  "flag icons",
+  "Astro",
+].join(", ");
+
+const npmUrl = `https://www.npmjs.com/package/${encodeURIComponent(flagsPkg.name)}`;
+const repoUrlRaw =
+  flagsPkg.repository && typeof flagsPkg.repository === "object" && flagsPkg.repository.url
+    ? String(flagsPkg.repository.url)
+    : "";
+const repoUrl = repoUrlRaw.replace(/^git\+/, "").replace(/\.git$/, "") || undefined;
 ---
 
-<BaseLayout title={pageTitle} description={pageDesc} flagIconCss={flagIconCss}>
-  <HomeHero pkg={flagsPkg} />
-  <main id="browse">
-    <FlagGrid items={items} />
-  </main>
-  <DocsModal pkg={flagsPkg} />
+<BaseLayout
+  title={pageTitle}
+  description={pageDesc}
+  flagIconCss={flagIconCss}
+  canonicalURL={canonicalURL}
+  jsonLd={jsonLd}
+  keywords={keywords}
+>
+  <HomeLanding
+    pkg={flagsPkg}
+    npmUrl={npmUrl}
+    repoUrl={repoUrl}
+    flagCount={FLAG_CODES.length}
+    items={items}
+  />
 </BaseLayout>
 
 <script>

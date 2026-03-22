@@ -4,8 +4,12 @@ Single Astro app with flag SVG assets and TypeScript helpers in **`flags/`** (bu
 
 | Area | Contents |
 | ---- | -------- |
-| **`src/`** | Astro pages, components, styles, client scripts |
+| **`src/`** | Astro pages, [Tailwind CSS v4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) (React islands), client scripts |
 | **`flags/`** | SVG trees (`svg/4x3`, `1x1`, `round`), TS source, generate scripts — see **[flags/README.md](flags/README.md)** for API notes |
+
+## Site URL (SEO)
+
+Set **`PUBLIC_SITE_URL`** to your public origin (e.g. `https://flags.example.com`) before `npm run build` so canonical URLs, Open Graph, `sitemap-index.xml`, and `robots.txt` point at the real domain. The default in config is a placeholder.
 
 ## Development
 

@@ -22,10 +22,8 @@ const { code, name, href43, href11, hrefRound, continent } = Astro.props;
   aria-label={`${name}, ${code}`}
 >
   <div class="thumb thumb--4x3">
-    <img src={href43} alt="" width="120" height="80" loading="lazy" />
-  </div>
-  <div class="card-tip" aria-hidden="true">
-    <span class="card-tip__name">{name}</span>
-    <span class="card-tip__code">{code}</span>
+    <div class="thumb__clip">
+      <img src={href43} alt="" width="120" height="80" loading="lazy" />
+    </div>
   </div>
 </article>

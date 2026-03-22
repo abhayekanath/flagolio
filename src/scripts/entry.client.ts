@@ -1,2 +1,1 @@
-import "./docsModal";
 import "./flagGridClient";

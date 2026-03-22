@@ -1,0 +1,136 @@
+---
+import type { FlagGridItem } from "../../lib/flagAssetMaps";
+import DocumentationDialog from "../docs/DocumentationDialog";
+import CopyNpmCta from "./CopyNpmCta";
+import HomeHeader from "./HomeHeader.astro";
+import FlagGrid from "../flag-grid/FlagGrid.astro";
+
+interface Pkg {
+  name: string;
+  version: string;
+  license: string;
+  description: string;
+}
+
+interface Props {
+  pkg: Pkg;
+  npmUrl: string;
+  repoUrl?: string;
+  flagCount: number;
+  items: FlagGridItem[];
+}
+
+const { pkg, npmUrl, repoUrl, flagCount, items } = Astro.props;
+const docPkg = { name: pkg.name, license: pkg.license };
+const installCmd = `npm install ${pkg.name}`;
+const year = new Date().getFullYear();
+---
+
+<main
+  class="mx-auto flex h-screen min-h-0 w-full max-w-[1800px] flex-col overflow-hidden bg-[#0f0f0f] text-zinc-100 [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:40px_40px] lg:grid lg:h-full lg:min-h-0 lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)]"
+  aria-labelledby="home-title"
+>
+  <!-- Left: fills viewport height; scrolls only if content overflows -->
+  <section
+    class="flex min-h-0 w-full min-w-0 shrink-0 flex-col justify-between px-[24px] pb-[24px] pt-[24px] md:px-[40px] md:pb-[28px] md:pt-[28px] lg:h-dvh lg:overflow-y-auto lg:border-r lg:border-white/10 lg:px-[32px] lg:pr-[28px] xl:px-[40px]"
+  >
+    <div class="flex min-h-0 w-full flex-col">
+      <HomeHeader npmUrl={npmUrl} repoUrl={repoUrl} />
+
+      <div class="min-w-0">
+        <p class="mb-[16px] text-[11px] font-semibold uppercase tracking-[0.22em] text-orange-400">
+          SVG flag library
+        </p>
+        <h1
+          id="home-title"
+          class="max-w-[18ch] text-[clamp(32px,5vw,48px)] font-bold leading-[1.08] tracking-[-0.03em] text-white"
+        >
+          Let&apos;s ship crisp flags everywhere — on every screen.
+        </h1>
+        <p class="mt-[20px] max-w-[42ch] text-[15px] leading-relaxed text-zinc-400">
+          {pkg.description}
+        </p>
+
+        <div class="mt-[28px]">
+          <CopyNpmCta client:load command={installCmd} />
+        </div>
+
+        <p class="mt-[20px] flex flex-wrap items-center gap-[8px] text-[13px] text-zinc-500">
+          <span class="text-amber-400" aria-hidden="true">★★★★★</span>
+          <span>MIT · ESM · {flagCount}+ flags</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-[40px] flex flex-col gap-[16px] border-t border-white/10 pt-[24px] md:mt-[32px] lg:mt-[40px]">
+      <nav
+        class="flex flex-wrap items-center gap-x-[10px] gap-y-[8px] text-[13px] text-zinc-500"
+        aria-label="Page"
+      >
+        <a
+          class="text-zinc-300 underline-offset-[3px] transition hover:text-white"
+          href={npmUrl}
+          target="_blank"
+          rel="noopener noreferrer">npm</a>
+        <span aria-hidden="true">·</span>
+        {
+          repoUrl ? (
+            <a
+              class="text-zinc-300 underline-offset-[3px] transition hover:text-white"
+              href={repoUrl}
+              target="_blank"
+              rel="noopener noreferrer">Source</a>
+          ) : null
+        }
+        {repoUrl ? <span aria-hidden="true">·</span> : null}
+        <DocumentationDialog
+          client:load
+          pkg={docPkg}
+          triggerClassName="text-zinc-300 underline-offset-[3px] hover:text-white"
+        />
+      </nav>
+      <p class="text-[12px] text-zinc-600">
+        v{pkg.version} · © {year} flagolio
+      </p>
+    </div>
+  </section>
+  <!-- Right: scroll area + bottom-centered float (absolute to #browse, not viewport) -->
+  <section
+    id="browse"
+    class="relative isolate flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-6 text-foreground h-dvh"
+  >
+    <div
+      class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-20 [scrollbar-gutter:stable]"
+    >
+      <FlagGrid items={items} />
+    </div>
+    <div
+      id="flag-code-float"
+      class="flag-code-float pointer-events-auto absolute bottom-6 left-1/2 z-[50] hidden w-[min(100%,420px)] max-w-full -translate-x-1/2"
+      role="region"
+      aria-label="Flag code"
+      aria-hidden="true"
+    >
+      <div class="flag-code-float__inner">
+        <i class="bx bx-code-alt flag-code-float__icon" aria-hidden="true"></i>
+        <code id="flag-code-float-value" class="flag-code-float__code"></code>
+        <button
+          type="button"
+          id="flag-code-float-copy"
+          class="flag-code-float__btn flag-code-float__copy"
+          aria-label="Copy code to clipboard"
+        >
+          <i class="bx bx-copy" aria-hidden="true"></i>
+        </button>
+        <button
+          type="button"
+          id="flag-code-float-dismiss"
+          class="flag-code-float__btn flag-code-float__btn--dim"
+          aria-label="Dismiss"
+        >
+          <i class="bx bx-x" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
