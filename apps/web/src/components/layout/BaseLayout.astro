@@ -1,0 +1,44 @@
+---
+import "lenis/dist/lenis.css";
+
+import "../../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  flagIconCss: string;
+}
+
+const { title, description, flagIconCss } = Astro.props;
+---
+
+<html lang="en" class="lenis lenis-smooth" data-theme="system">
+  <head>
+    <script is:inline>
+      (function () {
+        try {
+          var v = localStorage.getItem("flags-theme");
+          if (v === "light" || v === "dark" || v === "system") {
+            document.documentElement.setAttribute("data-theme", v);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <title>{title}</title>
+    <style set:html={flagIconCss}></style>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

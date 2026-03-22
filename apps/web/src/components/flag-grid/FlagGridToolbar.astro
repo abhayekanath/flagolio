@@ -1,0 +1,54 @@
+---
+import { CONTINENT_OPTIONS } from "../../lib/flagContinent";
+---
+
+<div class="toolbar-dock">
+  <div class="toolbar">
+    <div class="toolbar__filters">
+      <label class="toolbar__field">
+        Search
+        <input
+          type="search"
+          id="filter"
+          placeholder="Search…"
+          autocomplete="off"
+        />
+      </label>
+      <label class="toolbar__field">
+        Continent
+        <select id="continent" class="toolbar__select" aria-label="Filter by continent">
+          {CONTINENT_OPTIONS.map(({ value, label }) => (
+            <option value={value}>{label}</option>
+          ))}
+        </select>
+      </label>
+    </div>
+    <div class="toolbar__tabs-row">
+      <span class="toolbar__inline-label">Aspect</span>
+      <div class="tabs" role="tablist" aria-label="Flag view">
+        <button
+          type="button"
+          role="tab"
+          id="tab-4x3"
+          aria-selected="true"
+          aria-controls="grid"
+          data-tab="4x3">4×3</button>
+        <button
+          type="button"
+          role="tab"
+          id="tab-1x1"
+          aria-selected="false"
+          aria-controls="grid"
+          data-tab="1x1">1×1</button>
+        <button
+          type="button"
+          role="tab"
+          id="tab-rounded"
+          aria-selected="false"
+          aria-controls="grid"
+          data-tab="rounded">Rounded</button>
+      </div>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+---
+import ThemeSwitch from "./ThemeSwitch.astro";
+
+interface Props {
+  lede: string;
+}
+
+const { lede } = Astro.props;
+---
+
+<header class="page-head">
+  <div class="page-head__intro">
+    <h2 class="page-head__title">Browse flags</h2>
+    <p class="lede">{lede}</p>
+  </div>
+  <ThemeSwitch />
+</header>

@@ -1,0 +1,100 @@
+/* Theme tokens + page shell (import once from BaseLayout). */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #000000;
+  --surface: #111111;
+  --surface-elevated: #1a1a1a;
+  --border: #2e2e2e;
+  --text: #f5f5f5;
+  --muted: #a3a3a3;
+  --accent: #e5e5e5;
+  --thumb-bg: #0d0d0d;
+  --tooltip-bg: #e8e8e8;
+  --tooltip-fg: #0a0a0a;
+  --toolbar-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+  --card-tip-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fafafa;
+  --surface: #f4f4f5;
+  --surface-elevated: #e4e4e7;
+  --border: #d4d4d8;
+  --text: #18181b;
+  --muted: #71717a;
+  --accent: #3f3f46;
+  --thumb-bg: #e4e4e7;
+  --tooltip-bg: #27272a;
+  --tooltip-fg: #fafafa;
+  --toolbar-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.05),
+    0 12px 40px rgba(0, 0, 0, 0.1);
+  --card-tip-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+}
+[data-theme="system"] {
+  color-scheme: dark;
+  --bg: #000000;
+  --surface: #111111;
+  --surface-elevated: #1a1a1a;
+  --border: #2e2e2e;
+  --text: #f5f5f5;
+  --muted: #a3a3a3;
+  --accent: #e5e5e5;
+  --thumb-bg: #0d0d0d;
+  --tooltip-bg: #e8e8e8;
+  --tooltip-fg: #0a0a0a;
+  --toolbar-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+  --card-tip-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+@media (prefers-color-scheme: light) {
+  [data-theme="system"] {
+    color-scheme: light;
+    --bg: #fafafa;
+    --surface: #f4f4f5;
+    --surface-elevated: #e4e4e7;
+    --border: #d4d4d8;
+    --text: #18181b;
+    --muted: #71717a;
+    --accent: #3f3f46;
+    --thumb-bg: #e4e4e7;
+    --tooltip-bg: #27272a;
+    --tooltip-fg: #fafafa;
+    --toolbar-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.05),
+      0 12px 40px rgba(0, 0, 0, 0.1);
+    --card-tip-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  }
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  margin: 0;
+  min-height: 100vh;
+}
+body {
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.45;
+}
+.page {
+  width: 100%;
+  padding: 2rem clamp(0.75rem, 2vw, 1.5rem) 3rem;
+  overflow: visible;
+}

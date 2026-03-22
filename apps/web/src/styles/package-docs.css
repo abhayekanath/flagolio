@@ -1,0 +1,108 @@
+.home-docs {
+  max-width: 52rem;
+  padding: 2.5rem clamp(0.75rem, 2vw, 1.5rem) 4rem;
+  margin: 0 auto;
+  border-top: 1px solid var(--border);
+}
+.home-docs__h {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 2rem 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+.home-docs__h:first-of-type {
+  margin-top: 0;
+}
+.home-docs__h3 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.4rem;
+  color: var(--text);
+}
+.home-docs__p {
+  margin: 0 0 0.65rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 48em;
+}
+.home-docs__p--muted {
+  font-size: 0.8125rem;
+}
+.home-inline-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.84em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.home-code {
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  box-shadow: var(--toolbar-shadow);
+}
+.home-code code {
+  font-family: inherit;
+}
+.home-table-wrap {
+  overflow-x: auto;
+  margin: 0.5rem 0 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.home-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+.home-table th,
+.home-table td {
+  padding: 0.45rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.home-table th {
+  color: var(--muted);
+  font-weight: 600;
+}
+.home-table tr:last-child td {
+  border-bottom: none;
+}
+.home-details {
+  margin: 1.5rem 0 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+}
+.home-details__summary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.home-details[open] .home-details__summary {
+  margin-bottom: 0.75rem;
+}
+.home-footer {
+  margin: 2rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.home-footer strong {
+  color: var(--text);
+  font-weight: 600;
+}

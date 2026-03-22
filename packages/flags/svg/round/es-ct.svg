@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <clipPath id="clip-round-es-ct" clipPathUnits="userSpaceOnUse">
+      <circle cx="256" cy="256" r="256"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip-round-es-ct)">
+    <path fill="#fcdd09" d="M0 0h512v512H0z"/>
+      <path stroke="#da121a" stroke-width="60" d="M0 90h810m0 120H0m0 120h810m0 120H0" transform="scale(.6321 .94815)"/>
+  </g>
+</svg>

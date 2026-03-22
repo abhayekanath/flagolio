@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <clipPath id="clip-round-gb-eng" clipPathUnits="userSpaceOnUse">
+      <circle cx="256" cy="256" r="256"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#clip-round-gb-eng)">
+    <path fill="#fff" d="M0 0h512v512H0z"/>
+      <path fill="#ce1124" d="M215 0h82v512h-82z"/>
+      <path fill="#ce1124" d="M0 215h512v82H0z"/>
+  </g>
+</svg>

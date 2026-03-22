@@ -1,0 +1,141 @@
+---
+import "../../styles/package-docs.css";
+
+interface Pkg {
+  name: string;
+  license: string;
+}
+
+interface Props {
+  pkg: Pkg;
+}
+
+const { pkg } = Astro.props;
+const n = pkg.name;
+
+const codeListIds = `import { FLAG_CODES, type FlagCode } from "${n}";
+
+// readonly tuple of ids (e.g. "us", "gb", "es-ct", "un", …)
+console.log(FLAG_CODES.length);`;
+
+const codeIsFlag = `import { isFlagCode } from "${n}";
+
+if (isFlagCode(code)) {
+  // code is FlagCode
+}`;
+
+const codeFlagAsset = `import { flagAssetUrl } from "${n}";
+
+const src43 = flagAssetUrl("us", "4x3");
+const src11 = flagAssetUrl("us", "1x1");
+const srcRound = flagAssetUrl("us", "round");`;
+
+const codeReadFile = `import { readFile } from "node:fs/promises";
+import { getFlagPath } from "${n}";
+
+const svg = await readFile(getFlagPath("de", "4x3"), "utf8");`;
+
+const codeImportSvg = `import usFlag from "${n}/svg/4x3/us.svg";`;
+const codeImportUrl = `import usUrl from "${n}/svg/4x3/us.svg?url";`;
+const codeResolve = `import.meta.resolve("${n}/svg/4x3/us.svg");`;
+
+const yarnPublish = `yarn workspace ${n} npm publish --access public`;
+
+const codeClassIcons = `<!-- 4:3 wide (default) -->
+<i class="flag us" role="img" aria-label="United States"></i>
+
+<!-- Square 1:1 -->
+<i class="flag square us" role="img" aria-label="United States"></i>
+
+<!-- Round (1:1 circle asset) -->
+<i class="flag round us" role="img" aria-label="United States"></i>`;
+---
+
+<section class="home-docs" aria-labelledby="docs-title">
+  <h2 id="docs-title" class="home-docs__h">Install</h2>
+  <p class="home-docs__p">Add the package with your preferred client.</p>
+  <pre class="home-code"><code>npm install {n}</code></pre>
+  <pre class="home-code"><code>yarn add {n}</code></pre>
+  <pre class="home-code"><code>pnpm add {n}</code></pre>
+
+  <h2 class="home-docs__h">Quick start</h2>
+
+  <h3 class="home-docs__h3">List all flag ids</h3>
+  <pre class="home-code"><code>{codeListIds}</code></pre>
+
+  <h3 class="home-docs__h3">Check if a string is a known id</h3>
+  <pre class="home-code"><code>{codeIsFlag}</code></pre>
+
+  <h3 class="home-docs__h3">Resolve a file URL (Vite, Astro, Webpack 5, …)</h3>
+  <p class="home-docs__p">Uses <code class="home-inline-code">import.meta.url</code> so the SVG resolves next to the published package.</p>
+  <pre class="home-code"><code>{codeFlagAsset}</code></pre>
+  <p class="home-docs__p">
+    Use <code class="home-inline-code">src43</code> in <code class="home-inline-code">&lt;img src=&#123;…&#125; /&gt;</code> or CSS <code class="home-inline-code">url(…)</code>.
+  </p>
+
+  <h3 class="home-docs__h3">Absolute path on disk (Node)</h3>
+  <pre class="home-code"><code>{codeReadFile}</code></pre>
+
+  <h3 class="home-docs__h3">Import SVG files directly</h3>
+  <p class="home-docs__p">Subpath exports map to files under <code class="home-inline-code">flags/</code>.</p>
+  <pre class="home-code"><code>{codeImportSvg}</code></pre>
+  <p class="home-docs__p">With Vite-style asset URLs:</p>
+  <pre class="home-code"><code>{codeImportUrl}</code></pre>
+  <p class="home-docs__p">Resolve check:</p>
+  <pre class="home-code"><code>{codeResolve}</code></pre>
+
+  <h2 class="home-docs__h">Aspect ratios</h2>
+  <div class="home-table-wrap">
+    <table class="home-table">
+      <thead>
+        <tr>
+          <th scope="col"><code class="home-inline-code">FlagRatio</code></th>
+          <th scope="col">Folder</th>
+          <th scope="col">Use case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="home-inline-code">"4x3"</code></td>
+          <td><code class="home-inline-code">svg/4x3/</code></td>
+          <td>Default wide flag</td>
+        </tr>
+        <tr>
+          <td><code class="home-inline-code">"1x1"</code></td>
+          <td><code class="home-inline-code">svg/1x1/</code></td>
+          <td>Square</td>
+        </tr>
+        <tr>
+          <td><code class="home-inline-code">"round"</code></td>
+          <td><code class="home-inline-code">svg/round/</code></td>
+          <td>Circular mask in SVG</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="home-docs__h">CSS class icons (this site)</h2>
+  <p class="home-docs__p">
+    Use <code class="home-inline-code">flag</code> plus the id (4:3 default). Add <code class="home-inline-code">square</code> for 1:1 or <code class="home-inline-code">round</code> for the round asset. Icons scale with <code class="home-inline-code">font-size</code> on ancestors.
+  </p>
+  <pre class="home-code"><code>{codeClassIcons}</code></pre>
+  <p class="home-docs__p">
+    Styles are emitted at build time from the SVG assets. For accessibility, add <code class="home-inline-code">role="img"</code> and a short <code class="home-inline-code">aria-label</code>.
+  </p>
+
+  <details class="home-details">
+    <summary class="home-details__summary">Publishing (maintainers)</summary>
+    <p class="home-docs__p">From the monorepo root:</p>
+    <pre class="home-code"><code>npm run build -w {n}</code></pre>
+    <pre class="home-code"><code>npm login</code></pre>
+    <pre class="home-code"><code>npm publish -w {n} --access public</code></pre>
+    <pre class="home-code"><code>npm pack -w {n} --dry-run</code></pre>
+    <p class="home-docs__p home-docs__p--muted">
+      Yarn: <code class="home-inline-code">{yarnPublish}</code>
+    </p>
+  </details>
+
+  <p class="home-footer">
+    License: <strong>{pkg.license}</strong> · Full readme in the repo under <code class="home-inline-code">packages/flags/README.md</code>
+  </p>
+</section>

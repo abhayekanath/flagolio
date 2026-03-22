@@ -1,0 +1,52 @@
+{
+  "name": "@flag-list/flags",
+  "version": "0.1.0",
+  "description": "SVG country and region flags (4:3, 1:1, and round 1:1) with TypeScript helpers",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "flags",
+    "svg",
+    "country",
+    "countries",
+    "iso",
+    "typescript",
+    "4x3",
+    "1x1"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/flag-list.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/flag-list/issues"
+  },
+  "homepage": "https://github.com/your-org/flag-list/tree/main/packages/flags#readme",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./svg/*": "./svg/*"
+  },
+  "files": [
+    "dist",
+    "svg",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "prebuild": "node scripts/generate-round.mjs && node scripts/generate-codes.mjs",
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  }
+}

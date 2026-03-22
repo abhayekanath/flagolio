@@ -1,0 +1,36 @@
+---
+import "../../styles/docs-modal.css";
+
+import PackageDocs from "./PackageDocs.astro";
+
+interface Pkg {
+  name: string;
+  license: string;
+}
+
+interface Props {
+  pkg: Pkg;
+}
+
+const { pkg } = Astro.props;
+---
+
+<dialog
+  id="docs-modal"
+  class="docs-modal"
+  aria-labelledby="docs-modal-title"
+>
+  <div class="docs-modal__panel">
+    <header class="docs-modal__header">
+      <h2 id="docs-modal-title" class="docs-modal__title">Documentation</h2>
+      <button
+        type="button"
+        id="docs-modal-close"
+        class="docs-modal__close"
+        aria-label="Close documentation">&times;</button>
+    </header>
+    <div class="docs-modal__body">
+      <PackageDocs pkg={pkg} />
+    </div>
+  </div>
+</dialog>

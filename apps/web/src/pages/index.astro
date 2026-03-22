@@ -1,0 +1,38 @@
+---
+import { FLAG_CODES } from "@flag-list/flags";
+
+import flagsPkg from "../../../../packages/flags/package.json";
+
+import BaseLayout from "../components/layout/BaseLayout.astro";
+import DocsModal from "../components/docs/DocsModal.astro";
+import HomeHero from "../components/home/HomeHero.astro";
+import FlagGrid from "../components/flag-grid/FlagGrid.astro";
+
+import { buildFlagAssetMaps, buildFlagGridItems } from "../lib/flagAssetMaps";
+import { buildFlagIconCss } from "../lib/flagIconCss";
+import { getFlagLabel } from "../lib/flagLabel";
+
+const all = import.meta.glob(
+  "@flags/**/*.svg",
+  { eager: true, query: "?url", import: "default" },
+) as Record<string, string>;
+
+const maps = buildFlagAssetMaps(all);
+const items = buildFlagGridItems(maps, getFlagLabel);
+const flagIconCss = buildFlagIconCss(FLAG_CODES, maps.map43, maps.map11, maps.mapRound);
+
+const pageTitle = `${flagsPkg.name} · SVG flags for npm`;
+const pageDesc = flagsPkg.description;
+---
+
+<BaseLayout title={pageTitle} description={pageDesc} flagIconCss={flagIconCss}>
+  <HomeHero pkg={flagsPkg} />
+  <main id="browse">
+    <FlagGrid items={items} />
+  </main>
+  <DocsModal pkg={flagsPkg} />
+</BaseLayout>
+
+<script>
+  import "../scripts/entry.client.ts";
+</script>

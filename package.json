@@ -1,0 +1,14 @@
+{
+  "name": "flag-list",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @flag-list/flags && npm run build -w apps-web",
+    "dev": "npm run dev -w apps-web",
+    "pack:flags": "npm pack -w @flag-list/flags --dry-run",
+    "publish:flags": "npm publish -w @flag-list/flags --access public"
+  }
+}
