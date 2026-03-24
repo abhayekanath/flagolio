@@ -1,6 +1,6 @@
 {
   "name": "flagolio",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "type": "module",
   "description": "ISO 3166-1 alpha-2 SVG flags (default wide, square, round) with TypeScript helpers — Astro site and flag assets.",
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build:favicon-ico": "node scripts/build-favicon-ico.mjs",
-    "build:flags": "node flags/scripts/generate-round.mjs && node flags/scripts/generate-codes.mjs && node flags/scripts/generate-named-exports.mjs && tsc -p flags/tsconfig.build.json",
+    "build:flags": "node flags/scripts/generate-round.mjs && node flags/scripts/generate-codes.mjs && node flags/scripts/generate-named-exports.mjs && tsc -p flags/tsconfig.build.json && node flags/scripts/generate-cdn-css.mjs",
     "prebuild": "npm run build:flags",
     "build": "astro build",
     "check": "astro check",

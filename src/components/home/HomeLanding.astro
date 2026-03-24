@@ -22,7 +22,7 @@ interface Props {
 }
 
 const { pkg, npmUrl, repoUrl, githubRepo, flagCount, items } = Astro.props;
-const docPkg = { name: pkg.name, license: pkg.license };
+const docPkg = { name: pkg.name, version: pkg.version, license: pkg.license };
 const installCmd = `npm install ${pkg.name}`;
 const year = new Date().getFullYear();
 ---

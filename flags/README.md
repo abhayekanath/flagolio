@@ -24,6 +24,28 @@ pnpm add @flagolio/flags
 
 Requires **Node.js ≥ 18** (ESM).
 
+## CDN (jsDelivr / unpkg)
+
+Published packages are mirrored by public CDNs — **no bundler** required for SVGs or the optional class-based CSS.
+
+**Single SVG** (pin a version in production):
+
+```text
+https://cdn.jsdelivr.net/npm/@flagolio/flags@VERSION/svg/default/us.svg
+https://unpkg.com/@flagolio/flags@VERSION/svg/square/de.svg
+```
+
+**Class-based icons** (same markup as this repo’s `<i class="flag us">` — SVG via `background-image`, not a webfont). The build emits `dist/flagolio.cdn.css` with absolute jsDelivr URLs for the published version:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flagolio/flags@0.0.4/dist/flagolio.cdn.css" />
+<i class="flag us" role="img" aria-label="United States"></i>
+<i class="flag square gb" role="img" aria-label="United Kingdom"></i>
+<i class="flag round jp" role="img" aria-label="Japan"></i>
+```
+
+Subpath export: `@flagolio/flags/flagolio.cdn.css` → `dist/flagolio.cdn.css` (npm `exports`).
+
 ## Named imports (default wide)
 
 Each flag id is a lowercase code (mostly **ISO 3166-1 alpha-2**). It is exported as a **string URL** to the default (wide) SVG. Use like any other named import:

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 export interface PkgInfo {
   name: string;
+  version: string;
   license: string;
 }
 
@@ -31,6 +32,7 @@ function InlineCode({ children }: { children: ReactNode }) {
 
 export function PackageDocs({ pkg }: { pkg: PkgInfo }) {
   const n = pkg.name;
+  const cdnCssUrl = `https://cdn.jsdelivr.net/npm/${n}@${pkg.version}/dist/flagolio.cdn.css`;
 
   const codeNamed = `import { ad, ae, af, us, es_ct, _as } from "${n}";
 
@@ -104,6 +106,12 @@ getFlagPath("de", "round");`;
           <InlineCode>round</InlineCode> → <InlineCode>svg/round/</InlineCode>
         </li>
       </ul>
+
+      <h2 className="mb-[8px] text-[17px] font-semibold tracking-tight">CDN stylesheet (no bundler)</h2>
+      <p className="mb-[10px] text-[13px] text-muted-foreground">
+        After the package is published to npm, jsDelivr serves the generated CSS (SVG backgrounds, like Boxicons’ link tag — not a font file). Pin the version in production.
+      </p>
+      <CodeBlock className="mb-[16px]">{`<link rel="stylesheet" href="${cdnCssUrl}" />`}</CodeBlock>
 
       <h2 className="mb-[8px] text-[17px] font-semibold tracking-tight">CSS icons (this site)</h2>
       <p className="mb-[10px] text-[13px] text-muted-foreground">

@@ -57,7 +57,7 @@ const repoRaw =
     : "";
 const codeRepository = repoRaw.replace(/^git\+/, "").replace(/\.git$/, "") || undefined;
 
-const pageTitle = `${flagsPkg.name} · ISO 3166-1 alpha-2 flag SVGs for npm`;
+const pageTitle = `Flagolio · ISO 3166-1 alpha-2 flag SVGs for npm`;
 const pageDesc = `${flagsPkg.description} Browse ${FLAG_CODES.length}+ flags in default (wide), square, and round. TypeScript helpers: FLAG_CODES, flagAssetUrl, getFlagPath. Install with npm.`;
 
 const jsonLd = buildHomeJsonLd({
