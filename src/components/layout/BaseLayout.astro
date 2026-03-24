@@ -2,6 +2,7 @@
 import "lenis/dist/lenis.css";
 
 import "../../styles/global.css";
+import { inject } from "@vercel/analytics";
 
 interface Props {
   title: string;
@@ -44,6 +45,8 @@ const ogImageUrl =
 const robots = noindex
   ? "noindex, nofollow"
   : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+
+inject();
 ---
 
 <html lang="en" class="lenis lenis-smooth">
