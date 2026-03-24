@@ -3,7 +3,11 @@ import { fileURLToPath } from "node:url";
 
 import { FLAG_CODES, type FlagCode } from "./codes.js";
 
+/** Known flag ids (mostly ISO 3166-1 alpha-2; includes subdivisions and special codes). */
 export { FLAG_CODES, type FlagCode } from "./codes.js";
+
+/** Per-flag default (wide) SVG URLs: `import { us, es_ct, _as } from "@flagolio/flags"`. */
+export * from "./named.js";
 
 export type FlagRatio = "default" | "square" | "round";
 

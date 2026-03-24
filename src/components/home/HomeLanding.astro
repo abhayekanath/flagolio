@@ -1,8 +1,7 @@
 ---
 import type { FlagGridItem } from "../../lib/flagAssetMaps";
-import DocumentationDialog from "../docs/DocumentationDialog";
-import CopyNpmCta from "./CopyNpmCta";
-import HomeHeader from "./HomeHeader.astro";
+import HomeLeftNavTabs from "./HomeLeftNavTabs";
+import GitHubStarsLink from "./GitHubStarsLink";
 import FlagGrid from "../flag-grid/FlagGrid.astro";
 
 interface Pkg {
@@ -16,11 +15,13 @@ interface Props {
   pkg: Pkg;
   npmUrl: string;
   repoUrl?: string;
+  /** `owner/repo` for GitHub API star count */
+  githubRepo?: string;
   flagCount: number;
   items: FlagGridItem[];
 }
 
-const { pkg, npmUrl, repoUrl, flagCount, items } = Astro.props;
+const { pkg, npmUrl, repoUrl, githubRepo, flagCount, items } = Astro.props;
 const docPkg = { name: pkg.name, license: pkg.license };
 const installCmd = `npm install ${pkg.name}`;
 const year = new Date().getFullYear();
@@ -34,73 +35,71 @@ const year = new Date().getFullYear();
   <section
     class="flex min-h-0 w-full min-w-0 shrink-0 flex-col justify-between px-[24px] pb-[24px] pt-[24px] md:px-[40px] md:pb-[28px] md:pt-[28px] lg:h-dvh lg:overflow-y-auto lg:border-r lg:border-white/10 lg:px-[32px] lg:pr-[28px] xl:px-[40px]"
   >
-    <div class="flex min-h-0 w-full flex-col">
-      <HomeHeader npmUrl={npmUrl} repoUrl={repoUrl} />
+    <HomeLeftNavTabs
+      client:load
+      docPkg={docPkg}
+      installCmd={installCmd}
+      flagCount={flagCount}
+      pkgDescription={pkg.description}
+    />
 
-      <div class="min-w-0">
-        <p class="mb-[16px] text-[11px] font-semibold uppercase tracking-[0.22em] text-orange-400">
-          SVG flag library
-        </p>
-        <h1
-          id="home-title"
-          class="max-w-[18ch] text-[clamp(32px,5vw,48px)] font-bold leading-[1.08] tracking-[-0.03em] text-white"
-        >
-          Let&apos;s ship crisp flags everywhere — on every screen.
-        </h1>
-        <p class="mt-[20px] max-w-[42ch] text-[15px] leading-relaxed text-zinc-400">
-          {pkg.description}
-        </p>
-
-        <div class="mt-[28px]">
-          <CopyNpmCta client:load command={installCmd} />
-        </div>
-
-        <p class="mt-[20px] flex flex-wrap items-center gap-[8px] text-[13px] text-zinc-500">
-          <span class="text-amber-400" aria-hidden="true">★★★★★</span>
-          <span>MIT · ESM · {flagCount}+ flags</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="mt-[40px] flex flex-col gap-[16px] border-t border-white/10 pt-[24px] md:mt-[32px] lg:mt-[40px]">
+    <footer class="mt-[40px] flex justify-between items-center gap-[16px] border-t border-white/10 pt-[24px] md:mt-[32px] lg:mt-[40px]">
       <nav
-        class="flex flex-wrap items-center gap-x-[10px] gap-y-[8px] text-[13px] text-zinc-500"
+        class="flex flex-wrap items-center gap-x-[14px] gap-y-[8px] text-[13px] text-zinc-500"
         aria-label="Page"
       >
         <a
-          class="text-zinc-300 underline-offset-[3px] transition hover:text-white"
+          class="group inline-flex items-center gap-[6px] text-zinc-300 underline-offset-[3px] transition hover:text-white"
           href={npmUrl}
           target="_blank"
-          rel="noopener noreferrer">npm</a>
-        <span aria-hidden="true">·</span>
+          rel="noopener noreferrer"
+        >
+          <i
+            class="bxl bx-npm text-[22px] leading-none text-[#cb3837] transition group-hover:text-[#e85d4f]"
+            aria-hidden="true"
+          ></i>
+          <span>npm</span>
+        </a>
         {
           repoUrl ? (
-            <a
-              class="text-zinc-300 underline-offset-[3px] transition hover:text-white"
-              href={repoUrl}
-              target="_blank"
-              rel="noopener noreferrer">Source</a>
+            <>
+              <span class="text-zinc-600" aria-hidden="true">·</span>
+              <a
+                class="group inline-flex items-center gap-[6px] text-zinc-300 underline-offset-[3px] transition hover:text-white"
+                href={repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i
+                  class="bxl bx-github text-[20px] leading-none text-zinc-400 transition group-hover:text-white"
+                  aria-hidden="true"
+                ></i>
+                <span>GitHub</span>
+              </a>
+            </>
           ) : null
         }
-        {repoUrl ? <span aria-hidden="true">·</span> : null}
-        <DocumentationDialog
-          client:load
-          pkg={docPkg}
-          triggerClassName="text-zinc-300 underline-offset-[3px] hover:text-white"
-        />
+        {
+          githubRepo && repoUrl ? (
+            <>
+              <span class="text-zinc-600" aria-hidden="true">·</span>
+              <GitHubStarsLink client:load repoFullName={githubRepo} repoUrl={repoUrl} />
+            </>
+          ) : null
+        }
       </nav>
       <p class="text-[12px] text-zinc-600">
         v{pkg.version} · © {year} flagolio
       </p>
-    </div>
+    </footer>
   </section>
   <!-- Right: scroll area + bottom-centered float (absolute to #browse, not viewport) -->
   <section
     id="browse"
-    class="relative isolate flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-6 text-foreground h-dvh"
+    class="relative isolate flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden text-foreground h-dvh"
   >
     <div
-      class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-20 [scrollbar-gutter:stable]"
+      class="min-h-0 flex-1 overflow-y-auto pb-20 px-6 [scrollbar-gutter:stable]"
     >
       <FlagGrid items={items} />
     </div>

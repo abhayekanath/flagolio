@@ -1,9 +1,9 @@
 {
   "name": "flagolio",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
-  "description": "SVG country and region flags (default wide, square, and round) with TypeScript helpers — Astro site and flag assets.",
+  "description": "ISO 3166-1 alpha-2 SVG flags (default wide, square, round) with TypeScript helpers — Astro site and flag assets.",
   "license": "MIT",
   "displayNpmPackage": "@flagolio/flags",
   "repository": {
@@ -13,20 +13,21 @@
   "bugs": {
     "url": "https://github.com/abhayekanath/flagolio/issues"
   },
-  "homepage": "https://github.com/abhayekanath/flagolio#readme",
+  "homepage": "https://flagolio.vercel.app/",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
     "build:favicon-ico": "node scripts/build-favicon-ico.mjs",
-    "build:flags": "node flags/scripts/generate-round.mjs && node flags/scripts/generate-codes.mjs && tsc -p flags/tsconfig.build.json",
+    "build:flags": "node flags/scripts/generate-round.mjs && node flags/scripts/generate-codes.mjs && node flags/scripts/generate-named-exports.mjs && tsc -p flags/tsconfig.build.json",
     "prebuild": "npm run build:flags",
     "build": "astro build",
     "check": "astro check",
     "typecheck": "tsc --noEmit",
     "dev": "npm run build:flags && astro dev",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "publish:flags": "npm run build:flags && npm publish ./flags"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.1",
@@ -41,14 +42,13 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "astro": "^6.0.8",
-    "boxicons": "^2.1.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "countries-list": "^3.3.0",
     "gsap": "^3.14.2",
     "i18n-iso-countries": "^7.14.0",
-    "lenis": "^1.3.19",
-    "lucide-react": "^0.577.0",
+    "lenis": "^1.3.20",
+    "lucide-react": "^1.6.0",
     "radix-ui": "^1.4.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -60,8 +60,8 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@astrojs/sitemap": "^3.7.1",
-    "@types/node": "^22.13.10",
+    "@types/node": "^25.5.0",
     "png-to-ico": "^3.0.1",
-    "typescript": "^5.8.2"
+    "typescript": "^6.0.2"
   }
 }

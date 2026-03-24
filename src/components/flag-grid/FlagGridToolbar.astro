@@ -7,7 +7,7 @@ import { CONTINENT_OPTIONS } from "../../lib/flagContinent";
     <fieldset class="toolbar__filters">
       <legend class="sr-only">Filter flags</legend>
       <div class="toolbar__field">
-        <label class="toolbar__label sr-only" for="filter">Search</label>
+        <label class="toolbar__label hidden" for="filter">Search</label>
         <div class="toolbar__control">
           <i class="bx bx-search toolbar__control-icon" aria-hidden="true"></i>
           <input
@@ -21,7 +21,7 @@ import { CONTINENT_OPTIONS } from "../../lib/flagContinent";
         </div>
       </div>
       <div class="toolbar__field">
-        <label class="toolbar__label sr-only" for="continent">Region</label>
+        <label class="toolbar__label hidden" for="continent">Region</label>
         <div class="toolbar__control toolbar__control--select">
           <i class="bx bx-globe toolbar__control-icon" aria-hidden="true"></i>
           <select id="continent" name="continent" class="toolbar__select" aria-label="Filter by continent">

@@ -118,10 +118,10 @@
 /* Flag grid + toolbar: IDs + input[name="aspect"] used by flagGridClient.ts */
 @layer components {
   .toolbar-dock {
-    @apply sticky top-0 z-40 mb-[20px] bg-gradient-to-b from-background from-80% to-background/0 pt-[14px] pb-[10px];
+    @apply sticky top-0 z-40 mb-[20px] pt-[14px] pb-[10px];
   }
   .toolbar {
-    @apply flex flex-col gap-[10px] rounded-[14px] border border-border/80 bg-muted/40 p-[10px] shadow-[0_1px_0_oklch(1_0_0/6%),0_12px_40px_-12px_oklch(0_0_0/45%)] backdrop-blur-md backdrop-saturate-[1.15] sm:flex-row sm:flex-wrap sm:items-end sm:justify-between sm:gap-x-[20px] sm:gap-y-[14px];
+    @apply flex flex-col gap-[10px] rounded-[14px] border border-border/80 bg-muted/40 p-[10px] shadow-[0_1px_0_oklch(1_0_0/6%),0_12px_40px_-12px_oklch(0_0_0/45%)] backdrop-blur-md backdrop-saturate-[1.15] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-[20px] sm:gap-y-[14px];
   }
   .toolbar__filters {
     @apply m-0 flex min-w-0 flex-1 flex-wrap items-end gap-[10px] border-0 p-0;

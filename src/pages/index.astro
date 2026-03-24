@@ -27,6 +27,7 @@ import HomeLanding from "../components/home/HomeLanding.astro";
 import { buildFlagAssetMaps, buildFlagGridItems } from "../lib/flagAssetMaps";
 import { buildFlagIconCss } from "../lib/flagIconCss";
 import { getFlagLabel } from "../lib/flagLabel";
+import { parseGitHubRepoFromUrl } from "../lib/githubRepo";
 import { buildHomeJsonLd, resolveCanonicalUrl } from "../lib/seo";
 
 const all = import.meta.glob(
@@ -56,8 +57,8 @@ const repoRaw =
     : "";
 const codeRepository = repoRaw.replace(/^git\+/, "").replace(/\.git$/, "") || undefined;
 
-const pageTitle = `${flagsPkg.name} · SVG country & region flag SVGs for npm`;
-const pageDesc = `${flagsPkg.description} Browse ${FLAG_CODES.length}+ flag SVGs in default (wide), square, and round formats. TypeScript helpers: FLAG_CODES, flagAssetUrl, getFlagPath. Install with npm.`;
+const pageTitle = `${flagsPkg.name} · ISO 3166-1 alpha-2 flag SVGs for npm`;
+const pageDesc = `${flagsPkg.description} Browse ${FLAG_CODES.length}+ flags in default (wide), square, and round. TypeScript helpers: FLAG_CODES, flagAssetUrl, getFlagPath. Install with npm.`;
 
 const jsonLd = buildHomeJsonLd({
   siteUrl: siteRoot,
@@ -69,11 +70,11 @@ const jsonLd = buildHomeJsonLd({
 });
 
 const keywords = [
+  "ISO 3166-1 alpha-2",
   "country flags",
   "SVG flags",
   "npm",
   "TypeScript",
-  "ISO flags",
   "default wide flags",
   "square flags",
   "round flags",
@@ -87,6 +88,7 @@ const repoUrlRaw =
     ? String(flagsPkg.repository.url)
     : "";
 const repoUrl = repoUrlRaw.replace(/^git\+/, "").replace(/\.git$/, "") || undefined;
+const githubRepo = parseGitHubRepoFromUrl(repoUrl);
 ---
 
 <BaseLayout
@@ -101,6 +103,7 @@ const repoUrl = repoUrlRaw.replace(/^git\+/, "").replace(/\.git$/, "") || undefi
     pkg={flagsPkg}
     npmUrl={npmUrl}
     repoUrl={repoUrl}
+    githubRepo={githubRepo}
     flagCount={FLAG_CODES.length}
     items={items}
   />

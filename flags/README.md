@@ -1,6 +1,6 @@
 # @flagolio/flags
 
-SVG country and region flags in **default (wide)**, **square**, and **round** aspect ratios, plus TypeScript helpers (`FLAG_CODES`, path/URL resolvers, type guard).
+**ISO 3166-1 alpha-2** flag SVGs in **default (wide)**, **square**, and **round** aspect ratios, plus TypeScript helpers (`FLAG_CODES`, path/URL resolvers, type guard). The catalog also includes subdivisions and special codes where assets exist (e.g. `es-ct`, `gb-eng`, `un`).
 
 ## Install
 
@@ -23,6 +23,19 @@ pnpm add @flagolio/flags
 ```
 
 Requires **Node.js ≥ 18** (ESM).
+
+## Named imports (default wide)
+
+Each flag id is a lowercase code (mostly **ISO 3166-1 alpha-2**). It is exported as a **string URL** to the default (wide) SVG. Use like any other named import:
+
+```ts
+import { ad, ae, us, es_ct, _as } from "@flagolio/flags";
+```
+
+- Hyphens in ids become underscores (`es-ct` → `es_ct`).
+- Reserved JS words get a leading underscore (`as` → `_as` for American Samoa; `_do`, `_in`, `_is` similarly).
+
+For **square**, **round**, or **dynamic** ids, use `flagAssetUrl` / `getFlagPath` below.
 
 ## Quick start
 
