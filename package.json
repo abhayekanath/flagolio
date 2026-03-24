@@ -62,6 +62,6 @@
     "@astrojs/sitemap": "^3.7.1",
     "@types/node": "^25.5.0",
     "png-to-ico": "^3.0.1",
-    "typescript": "^6.0.2"
+    "typescript": "~5.9.3"
   }
 }
