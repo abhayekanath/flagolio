@@ -5,7 +5,7 @@ Single Astro app with flag SVG assets and TypeScript helpers in **`flags/`** (bu
 | Area | Contents |
 | ---- | -------- |
 | **`src/`** | Astro pages, [Tailwind CSS v4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) (React islands), client scripts |
-| **`flags/`** | SVG trees (`svg/4x3`, `1x1`, `round`), TS source, generate scripts — see **[flags/README.md](flags/README.md)** for API notes |
+| **`flags/`** | SVG trees (`svg/default`, `square`, `round`), TS source, generate scripts — see **[flags/README.md](flags/README.md)** for API notes |
 
 ## Site URL (SEO)
 

@@ -17,17 +17,16 @@ const site = process.env.PUBLIC_SITE_URL ?? "https://example.com";
 export default defineConfig({
   site,
 
+  /** Used by `astro dev` and `astro preview`. */
   server: {
     port: 3030,
-    strictPort: true,
-  },
-
-  preview: {
-    port: 3030,
-    strictPort: true,
   },
 
   vite: {
+    /** Fail if 3030 is taken (Astro server config no longer exposes strictPort). */
+    server: {
+      strictPort: true,
+    },
     resolve: {
       alias: {
         "@": resolve(__dirname, "src"),

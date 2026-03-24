@@ -45,26 +45,26 @@ if (isFlagCode(code)) {
 
   const codeFlagAsset = `import { flagAssetUrl } from "${n}";
 
-const src43 = flagAssetUrl("us", "4x3");
-const src11 = flagAssetUrl("us", "1x1");
+const srcDefault = flagAssetUrl("us", "default");
+const srcSquare = flagAssetUrl("us", "square");
 const srcRound = flagAssetUrl("us", "round");`;
 
   const codeReadFile = `import { readFile } from "node:fs/promises";
 import { getFlagPath } from "${n}";
 
-const svg = await readFile(getFlagPath("de", "4x3"), "utf8");`;
+const svg = await readFile(getFlagPath("de", "default"), "utf8");`;
 
-  const codeImportSvg = `import usFlag from "${n}/svg/4x3/us.svg";`;
-  const codeImportUrl = `import usUrl from "${n}/svg/4x3/us.svg?url";`;
-  const codeResolve = `import.meta.resolve("${n}/svg/4x3/us.svg");`;
+  const codeImportSvg = `import usFlag from "${n}/svg/default/us.svg";`;
+  const codeImportUrl = `import usUrl from "${n}/svg/default/us.svg?url";`;
+  const codeResolve = `import.meta.resolve("${n}/svg/default/us.svg");`;
 
-  const codeClassIcons = `<!-- 4:3 wide (default) -->
+  const codeClassIcons = `<!-- Default wide -->
 <i class="flag us" role="img" aria-label="United States"></i>
 
-<!-- Square 1:1 -->
+<!-- Square -->
 <i class="flag square us" role="img" aria-label="United States"></i>
 
-<!-- Round (1:1 circle asset) -->
+<!-- Round (circle asset) -->
 <i class="flag round us" role="img" aria-label="United States"></i>`;
 
   return (
@@ -97,7 +97,7 @@ const svg = await readFile(getFlagPath("de", "4x3"), "utf8");`;
       </p>
       <CodeBlock>{codeFlagAsset}</CodeBlock>
       <p className="mb-[12px] max-w-[768px] text-[14px] leading-relaxed text-muted-foreground">
-        Use <InlineCode>src43</InlineCode> in <InlineCode>&lt;img src=&#123;…&#125; /&gt;</InlineCode> or CSS{" "}
+        Use <InlineCode>srcDefault</InlineCode> in <InlineCode>&lt;img src=&#123;…&#125; /&gt;</InlineCode> or CSS{" "}
         <InlineCode>url(…)</InlineCode>.
       </p>
 
@@ -131,19 +131,19 @@ const svg = await readFile(getFlagPath("de", "4x3"), "utf8");`;
           <tbody>
             <tr>
               <td className="border-b border-border px-[12px] py-[8px] align-top">
-                <InlineCode>&quot;4x3&quot;</InlineCode>
+                <InlineCode>&quot;default&quot;</InlineCode>
               </td>
               <td className="border-b border-border px-[12px] py-[8px] align-top">
-                <InlineCode>svg/4x3/</InlineCode>
+                <InlineCode>svg/default/</InlineCode>
               </td>
               <td className="border-b border-border px-[12px] py-[8px] align-top">Default wide flag</td>
             </tr>
             <tr>
               <td className="border-b border-border px-[12px] py-[8px] align-top">
-                <InlineCode>&quot;1x1&quot;</InlineCode>
+                <InlineCode>&quot;square&quot;</InlineCode>
               </td>
               <td className="border-b border-border px-[12px] py-[8px] align-top">
-                <InlineCode>svg/1x1/</InlineCode>
+                <InlineCode>svg/square/</InlineCode>
               </td>
               <td className="border-b border-border px-[12px] py-[8px] align-top">Square</td>
             </tr>
@@ -164,9 +164,9 @@ const svg = await readFile(getFlagPath("de", "4x3"), "utf8");`;
 
       <h2 className="text-[18px] font-semibold tracking-tight">CSS class icons (this site)</h2>
       <p className="mb-[12px] max-w-[768px] text-[14px] leading-relaxed text-muted-foreground">
-        Use <InlineCode>flag</InlineCode> plus the id (4:3 default). Add <InlineCode>square</InlineCode> for 1:1 or{" "}
-        <InlineCode>round</InlineCode> for the round asset. Icons scale with <InlineCode>font-size</InlineCode> on
-        ancestors.
+        Use <InlineCode>flag</InlineCode> plus the id (default wide). Add <InlineCode>square</InlineCode> for the square
+        asset or <InlineCode>round</InlineCode> for the round asset. Icons scale with <InlineCode>font-size</InlineCode>{" "}
+        on ancestors.
       </p>
       <CodeBlock>{codeClassIcons}</CodeBlock>
       <p className="mb-[12px] max-w-[768px] text-[14px] leading-relaxed text-muted-foreground">

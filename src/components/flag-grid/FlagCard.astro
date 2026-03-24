@@ -2,28 +2,31 @@
 interface Props {
   code: string;
   name: string;
-  href43: string;
-  href11: string;
+  hrefDefault: string;
+  hrefSquare: string;
   hrefRound: string;
   continent: string;
 }
 
-const { code, name, href43, href11, hrefRound, continent } = Astro.props;
+const { code, name, hrefDefault, hrefSquare, hrefRound, continent } = Astro.props;
 ---
 
 <article
   class="card"
+  role="button"
+  tabindex="0"
   data-code={code}
+  data-label={name}
   data-name={name.toLowerCase()}
   data-continent={continent}
-  data-href-4x3={href43}
-  data-href-1x1={href11}
+  data-href-default={hrefDefault}
+  data-href-square={hrefSquare}
   data-href-round={hrefRound}
   aria-label={`${name}, ${code}`}
 >
-  <div class="thumb thumb--4x3">
+  <div class="thumb thumb--default">
     <div class="thumb__clip">
-      <img src={href43} alt="" width="120" height="80" loading="lazy" />
+      <img src={hrefDefault} alt="" width="120" height="80" loading="lazy" />
     </div>
   </div>
 </article>

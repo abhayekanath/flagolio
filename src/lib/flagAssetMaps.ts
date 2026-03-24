@@ -1,8 +1,8 @@
 import { FLAG_CODES } from "@flagolio/flags";
 
 export type FlagAssetMaps = {
-  map43: Record<string, string>;
-  map11: Record<string, string>;
+  mapDefault: Record<string, string>;
+  mapSquare: Record<string, string>;
   mapRound: Record<string, string>;
 };
 
@@ -10,26 +10,26 @@ export type FlagAssetMaps = {
 export function buildFlagAssetMaps(
   globResult: Record<string, string>,
 ): FlagAssetMaps {
-  const map43: Record<string, string> = {};
-  const map11: Record<string, string> = {};
+  const mapDefault: Record<string, string> = {};
+  const mapSquare: Record<string, string> = {};
   const mapRound: Record<string, string> = {};
 
   for (const [p, url] of Object.entries(globResult)) {
     const m = p.match(/\/([^/]+)\.svg$/);
     if (!m) continue;
-    if (p.includes("/4x3/")) map43[m[1]] = url;
-    if (p.includes("/1x1/")) map11[m[1]] = url;
+    if (p.includes("/default/")) mapDefault[m[1]] = url;
+    if (p.includes("/square/")) mapSquare[m[1]] = url;
     if (p.includes("/round/")) mapRound[m[1]] = url;
   }
 
-  return { map43, map11, mapRound };
+  return { mapDefault, mapSquare, mapRound };
 }
 
 export type FlagGridItem = {
   code: string;
   name: string;
-  href43: string;
-  href11: string;
+  hrefDefault: string;
+  hrefSquare: string;
   hrefRound: string;
 };
 
@@ -38,12 +38,12 @@ export function buildFlagGridItems(
   getLabel: (code: string) => string,
 ): FlagGridItem[] {
   return FLAG_CODES.filter(
-    (c) => maps.map43[c] && maps.map11[c] && maps.mapRound[c],
+    (c) => maps.mapDefault[c] && maps.mapSquare[c] && maps.mapRound[c],
   ).map((code) => ({
     code,
     name: getLabel(code),
-    href43: maps.map43[code],
-    href11: maps.map11[code],
+    hrefDefault: maps.mapDefault[code],
+    hrefSquare: maps.mapSquare[code],
     hrefRound: maps.mapRound[code],
   }));
 }

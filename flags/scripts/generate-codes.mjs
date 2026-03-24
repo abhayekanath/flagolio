@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dir = path.join(__dirname, "../svg/1x1");
+const dir = path.join(__dirname, "../svg/square");
 const codes = fs
   .readdirSync(dir)
   .filter((f) => f.endsWith(".svg"))

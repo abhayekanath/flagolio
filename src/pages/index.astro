@@ -36,7 +36,12 @@ const all = import.meta.glob(
 
 const maps = buildFlagAssetMaps(all);
 const items = buildFlagGridItems(maps, getFlagLabel);
-const flagIconCss = buildFlagIconCss(FLAG_CODES, maps.map43, maps.map11, maps.mapRound);
+const flagIconCss = buildFlagIconCss(
+  FLAG_CODES,
+  maps.mapDefault,
+  maps.mapSquare,
+  maps.mapRound,
+);
 
 if (!Astro.site) {
   throw new Error("Set `site` in `astro.config.mjs` (or PUBLIC_SITE_URL) for canonical URLs and sitemap.");
@@ -52,7 +57,7 @@ const repoRaw =
 const codeRepository = repoRaw.replace(/^git\+/, "").replace(/\.git$/, "") || undefined;
 
 const pageTitle = `${flagsPkg.name} · SVG country & region flag SVGs for npm`;
-const pageDesc = `${flagsPkg.description} Browse ${FLAG_CODES.length}+ flag SVGs in 4:3, 1:1, and round formats. TypeScript helpers: FLAG_CODES, flagAssetUrl, getFlagPath. Install with npm.`;
+const pageDesc = `${flagsPkg.description} Browse ${FLAG_CODES.length}+ flag SVGs in default (wide), square, and round formats. TypeScript helpers: FLAG_CODES, flagAssetUrl, getFlagPath. Install with npm.`;
 
 const jsonLd = buildHomeJsonLd({
   siteUrl: siteRoot,
@@ -69,8 +74,8 @@ const keywords = [
   "npm",
   "TypeScript",
   "ISO flags",
-  "4:3",
-  "1:1",
+  "default wide flags",
+  "square flags",
   "round flags",
   "flag icons",
   "Astro",

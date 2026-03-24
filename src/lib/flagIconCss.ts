@@ -2,21 +2,21 @@ import type { FlagCode } from "@flagolio/flags";
 
 /**
  * Class-based flags:
- * - `<i class="flag us">` — 4:3 (default)
- * - `<i class="flag square us">` — 1:1
- * - `<i class="flag round us">` — round 1:1 asset
+ * - `<i class="flag us">` — default (wide) ratio
+ * - `<i class="flag square us">` — square ratio
+ * - `<i class="flag round us">` — round asset
  */
 export function buildFlagIconCss(
   codes: readonly FlagCode[],
-  map43: Record<string, string>,
-  map11: Record<string, string>,
+  mapDefault: Record<string, string>,
+  mapSquare: Record<string, string>,
   mapRound: Record<string, string>,
 ): string {
   const bgRules: string[] = [];
   for (const code of codes) {
     const uR = mapRound[code];
-    const u4 = map43[code];
-    const u1 = map11[code];
+    const u4 = mapDefault[code];
+    const u1 = mapSquare[code];
     if (u4) {
       bgRules.push(
         `.flag.${code}{background-image:url(${JSON.stringify(u4)})}`,

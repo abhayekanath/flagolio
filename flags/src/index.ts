@@ -5,14 +5,14 @@ import { FLAG_CODES, type FlagCode } from "./codes.js";
 
 export { FLAG_CODES, type FlagCode } from "./codes.js";
 
-export type FlagRatio = "1x1" | "4x3" | "round";
+export type FlagRatio = "default" | "square" | "round";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /** Absolute filesystem path to an SVG (Node.js). */
 export function getFlagPath(
   code: string,
-  ratio: FlagRatio = "4x3",
+  ratio: FlagRatio = "default",
 ): string {
   return join(__dirname, "..", "svg", ratio, `${code}.svg`);
 }
@@ -22,7 +22,7 @@ export function getFlagPath(
  */
 export function flagAssetUrl(
   code: string,
-  ratio: FlagRatio = "4x3",
+  ratio: FlagRatio = "default",
 ): string {
   return new URL(`../svg/${ratio}/${code}.svg`, import.meta.url).href;
 }

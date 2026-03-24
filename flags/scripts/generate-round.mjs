@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const srcDir = path.join(__dirname, "../svg/1x1");
+const srcDir = path.join(__dirname, "../svg/square");
 const outDir = path.join(__dirname, "../svg/round");
 
 /**

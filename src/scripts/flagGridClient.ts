@@ -2,7 +2,7 @@ import gsap from "gsap";
 
 import "./lenis";
 
-type Tab = "4x3" | "1x1" | "rounded";
+type Tab = "default" | "square" | "rounded";
 
 const grid = document.getElementById("grid");
 const form = document.getElementById("flag-toolbar");
@@ -16,14 +16,31 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
 
 function tabFromUrl(): Tab {
   const p = new URLSearchParams(window.location.search).get("tab");
-  if (p === "1x1" || p === "rounded") return p;
-  return "4x3";
+  if (p === "square" || p === "1x1") return "square";
+  if (p === "rounded" || p === "round") return "rounded";
+  if (p === "default" || p === "4x3") return "default";
+  return "default";
+}
+
+function escapeHtmlAttr(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+}
+
+/** Matches PackageDocs / `flagIconCss`: default, `flag square`, or `flag round` + code. */
+function buildFlagIconMarkup(code: string, label: string, tab: Tab): string {
+  const classes =
+    tab === "default"
+      ? `flag ${code}`
+      : tab === "square"
+        ? `flag square ${code}`
+        : `flag round ${code}`;
+  return `<i class="${classes}" role="img" aria-label="${escapeHtmlAttr(label)}"></i>`;
 }
 
 function setUrl(tab: Tab) {
   const path = window.location.pathname || "/";
   const next =
-    tab === "4x3" ? path : `${path}?tab=${encodeURIComponent(tab)}`;
+    tab === "default" ? path : `${path}?tab=${encodeURIComponent(tab)}`;
   window.history.replaceState(null, "", next);
 }
 
@@ -31,17 +48,17 @@ function applyThumb(
   thumb: HTMLElement,
   img: HTMLImageElement,
   tab: Tab,
-  src4: string,
-  src1: string,
+  srcDefault: string,
+  srcSquare: string,
   srcRound: string,
 ) {
   thumb.className = "thumb";
-  if (tab === "4x3") {
-    thumb.classList.add("thumb--4x3");
-    img.src = src4;
-  } else if (tab === "1x1") {
-    thumb.classList.add("thumb--1x1");
-    img.src = src1;
+  if (tab === "default") {
+    thumb.classList.add("thumb--default");
+    img.src = srcDefault;
+  } else if (tab === "square") {
+    thumb.classList.add("thumb--square");
+    img.src = srcSquare;
   } else {
     thumb.classList.add("thumb--round");
     img.src = srcRound;
@@ -51,20 +68,20 @@ function applyThumb(
 function applyAllThumbs(tab: Tab) {
   document.querySelectorAll(".card").forEach((card) => {
     const el = card as HTMLElement;
-    const src4 = el.getAttribute("data-href-4x3");
-    const src1 = el.getAttribute("data-href-1x1");
+    const srcDefault = el.getAttribute("data-href-default");
+    const srcSquare = el.getAttribute("data-href-square");
     const srcRound = el.getAttribute("data-href-round");
     const thumb = el.querySelector(".thumb");
     const img = el.querySelector("img");
     if (
       !(thumb instanceof HTMLElement) ||
       !(img instanceof HTMLImageElement) ||
-      !src4 ||
-      !src1 ||
+      !srcDefault ||
+      !srcSquare ||
       !srcRound
     )
       return;
-    applyThumb(thumb, img, tab, src4, src1, srcRound);
+    applyThumb(thumb, img, tab, srcDefault, srcSquare, srcRound);
   });
 }
 
@@ -73,12 +90,32 @@ function updateTabUI(tab: Tab) {
     r.checked = r.value === tab;
   }
   const labelId =
-    tab === "4x3" ? "tab-4x3" : tab === "1x1" ? "tab-1x1" : "tab-rounded";
+    tab === "default"
+      ? "tab-default"
+      : tab === "square"
+        ? "tab-square"
+        : "tab-rounded";
   grid?.setAttribute("aria-labelledby", labelId);
 }
 
 let firstTabApply = true;
 let activeTab: Tab | null = null;
+
+/** When set, the code float is showing this flag — markup updates if aspect tab changes. */
+let floatCtx: { code: string; label: string } | null = null;
+let floatCode = "";
+
+let activeCardEl: HTMLElement | null = null;
+
+function setActiveCard(card: HTMLElement) {
+  if (activeCardEl && activeCardEl !== card) {
+    activeCardEl.classList.remove("card--active");
+    activeCardEl.removeAttribute("aria-current");
+  }
+  activeCardEl = card;
+  card.classList.add("card--active");
+  card.setAttribute("aria-current", "true");
+}
 
 function setTab(tab: Tab, animate: boolean) {
   if (activeTab === tab && !firstTabApply) {
@@ -139,6 +176,11 @@ function applyFilter() {
     const show = searchOk && continentOk;
     el.hidden = !show;
   }
+  if (activeCardEl?.hidden) {
+    activeCardEl.classList.remove("card--active");
+    activeCardEl.removeAttribute("aria-current");
+    activeCardEl = null;
+  }
 }
 
 form?.addEventListener("submit", (e) => {
@@ -149,7 +191,16 @@ form?.addEventListener("change", (e) => {
   const t = e.target;
   if (t instanceof HTMLInputElement && t.name === "aspect") {
     const v = t.value;
-    if (v === "4x3" || v === "1x1" || v === "rounded") setTab(v, true);
+    if (v === "default" || v === "square" || v === "rounded") {
+      setTab(v, true);
+      const ff = document.getElementById("flag-code-float");
+      const fv = document.getElementById("flag-code-float-value");
+      if (floatCtx && ff && !ff.classList.contains("hidden")) {
+        const tabNow = activeTab ?? "default";
+        floatCode = buildFlagIconMarkup(floatCtx.code, floatCtx.label, tabNow);
+        if (fv) fv.textContent = floatCode;
+      }
+    }
     return;
   }
   if (t instanceof HTMLSelectElement && t.name === "continent") {
@@ -168,31 +219,46 @@ const flagFloatValue = document.getElementById("flag-code-float-value");
 const flagFloatCopy = document.getElementById("flag-code-float-copy");
 const flagFloatDismiss = document.getElementById("flag-code-float-dismiss");
 
-let floatCode = "";
-
-function showFlagFloat(code: string) {
-  floatCode = code;
-  if (flagFloatValue) flagFloatValue.textContent = code;
+function showFlagFloat(code: string, label: string, tab: Tab) {
+  floatCtx = { code, label };
+  floatCode = buildFlagIconMarkup(code, label, tab);
+  if (flagFloatValue) flagFloatValue.textContent = floatCode;
   flagFloat?.classList.remove("hidden");
   flagFloat?.setAttribute("aria-hidden", "false");
   flagFloat?.classList.remove("is-copied");
 }
 
 function hideFlagFloat() {
+  floatCtx = null;
   flagFloat?.classList.add("hidden");
   flagFloat?.setAttribute("aria-hidden", "true");
   floatCode = "";
   flagFloat?.classList.remove("is-copied");
 }
 
-grid?.addEventListener("click", (e) => {
-  const card = (e.target as Element).closest(".card");
-  if (!card || !(card instanceof HTMLElement)) return;
+function openCard(card: HTMLElement) {
   if (card.hidden) return;
   const code = card.dataset.code;
   if (!code) return;
+  const label = card.dataset.label ?? code;
+  setActiveCard(card);
+  const tab = activeTab ?? tabFromUrl();
+  showFlagFloat(code, label, tab);
+}
+
+grid?.addEventListener("click", (e) => {
+  const card = (e.target as Element).closest(".card");
+  if (!card || !(card instanceof HTMLElement)) return;
   e.preventDefault();
-  showFlagFloat(code);
+  openCard(card);
+});
+
+grid?.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const card = (e.target as Element).closest(".card");
+  if (!card || !(card instanceof HTMLElement)) return;
+  e.preventDefault();
+  openCard(card);
 });
 
 flagFloatCopy?.addEventListener("click", async (e) => {
@@ -217,4 +283,3 @@ document.addEventListener("keydown", (e) => {
     hideFlagFloat();
   }
 });
-

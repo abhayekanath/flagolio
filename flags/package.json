@@ -1,0 +1,36 @@
+{
+  "name": "@flagolio/flags",
+  "version": "0.0.2",
+  "description": "SVG country and region flags (default wide, square, round) with TypeScript helpers.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhayekanath/flagolio.git",
+    "directory": "flags"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./svg/*": "./svg/*"
+  },
+  "files": [
+    "dist",
+    "svg"
+  ],
+  "scripts": {
+    "build": "node scripts/generate-round.mjs && node scripts/generate-codes.mjs && tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false
+}

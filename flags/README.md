@@ -1,6 +1,6 @@
 # @flagolio/flags
 
-SVG country and region flags in **4:3**, **1:1**, and **round 1:1** aspect ratios, plus TypeScript helpers (`FLAG_CODES`, path/URL resolvers, type guard).
+SVG country and region flags in **default (wide)**, **square**, and **round** aspect ratios, plus TypeScript helpers (`FLAG_CODES`, path/URL resolvers, type guard).
 
 ## Install
 
@@ -52,12 +52,12 @@ Uses `import.meta.url` so the SVG resolves next to the published package:
 ```ts
 import { flagAssetUrl } from "@flagolio/flags";
 
-const src43 = flagAssetUrl("us", "4x3");
-const src11 = flagAssetUrl("us", "1x1");
+const srcDefault = flagAssetUrl("us", "default");
+const srcSquare = flagAssetUrl("us", "square");
 const srcRound = flagAssetUrl("us", "round");
 ```
 
-Use `src43` in `<img src={...} />` or CSS `url(...)`.
+Use `srcDefault` in `<img src={...} />` or CSS `url(...)`.
 
 ### Absolute path on disk (Node scripts, servers)
 
@@ -65,7 +65,7 @@ Use `src43` in `<img src={...} />` or CSS `url(...)`.
 import { readFile } from "node:fs/promises";
 import { getFlagPath } from "@flagolio/flags";
 
-const svg = await readFile(getFlagPath("de", "4x3"), "utf8");
+const svg = await readFile(getFlagPath("de", "default"), "utf8");
 ```
 
 ### Import SVG files directly
@@ -73,46 +73,77 @@ const svg = await readFile(getFlagPath("de", "4x3"), "utf8");
 Subpath exports map to files under `svg/`:
 
 ```ts
-import usFlag from "@flagolio/flags/svg/4x3/us.svg";
+import usFlag from "@flagolio/flags/svg/default/us.svg";
 ```
 
 With bundlers that support asset imports, add the query your toolchain expects, e.g. Vite:
 
 ```ts
-import usUrl from "@flagolio/flags/svg/4x3/us.svg?url";
+import usUrl from "@flagolio/flags/svg/default/us.svg?url";
 ```
 
 You can confirm resolution with:
 
 ```ts
-import.meta.resolve("@flagolio/flags/svg/4x3/us.svg");
+import.meta.resolve("@flagolio/flags/svg/default/us.svg");
 ```
 
 ### Ratios
 
-| `FlagRatio` | Folder        | Use case              |
-| ----------- | ------------- | --------------------- |
-| `"4x3"`     | `svg/4x3/`    | Default wide flag     |
-| `"1x1"`     | `svg/1x1/`    | Square                |
-| `"round"`   | `svg/round/`  | Circular mask in SVG |
+| `FlagRatio`   | Folder          | Use case              |
+| ------------- | --------------- | --------------------- |
+| `"default"`   | `svg/default/`  | Default wide flag     |
+| `"square"`    | `svg/square/`   | Square                |
+| `"round"`     | `svg/round/`    | Circular mask in SVG  |
+
+## `npm link` (try the package in another project)
+
+Order matters. **`npm link @flagolio/flags`** is only run in the *consumer* app, after the library is registered globally.
+
+1. **Build** and **register** the package (from repo root or from `flags/`):
+
+   ```bash
+   npm run build:flags
+   cd flags
+   npm link
+   ```
+
+   That last command has **no package name**. It reads `flags/package.json` and creates a global link to this folder.
+
+2. In **another project** (the one that will `import "@flagolio/flags"`):
+
+   ```bash
+   npm link @flagolio/flags
+   ```
+
+If you run step 2 **before** step 1, or from inside `flags/` expecting it to “install itself”, npm falls back to the registry → **404** (package is not published).
+
+To remove the link in the consumer: `npm unlink @flagolio/flags` then `npm install`.
 
 ## Publishing as an npm package (maintainers)
 
-This repo is a single app; to publish **`@flagolio/flags`** again you would add a `package.json` under `flags/` (or use npm `files` from root) and point `main`/`types` at `flags/dist`. Until then:
+`package.json` lives under **`flags/`**. From that folder:
 
-1. **Build** the library output:
+1. **Build** the library output (from repo root):
 
    ```bash
    npm run build:flags
    ```
 
-2. **Log in** to npm (one-time per machine): `npm login`
+2. **Authenticate** to npm (pick one):
 
-3. **Bump the version** in the package manifest you publish from.
+   - **`npm login`** (simplest), or  
+   - a **granular access token** from [npm → Access Tokens](https://www.npmjs.com/settings/~/tokens), stored only in your **user** config file `~/.npmrc` (Windows: `C:\Users\<you>\.npmrc`), e.g.  
+     `//registry.npmjs.org/:_authToken=YOUR_TOKEN`  
+     Never commit tokens; project `.npmrc` is gitignored here.
 
-4. **Publish** the scoped package (first publish must allow public scope), e.g. `npm publish --access public` from the package root you configure.
+   **Do not** run `npm install` with a string starting with `npm_` — that is a **token**, not a package name; npm will return **404** / invalid name.
 
-5. **Dry run:** `npm pack --dry-run`
+3. **Bump the version** in `flags/package.json`.
+
+4. **Publish** from `flags/`: `npm publish` — `publishConfig.access` is set to **`public`** in `package.json`, so scoped `@flagolio/flags` is published as a **public** package (no paid npm plan required). You still need npm login + 2FA/token as required by your account.
+
+5. **Dry run:** `cd flags && npm pack --dry-run`
 
 Update `repository.url` and the copyright year in `LICENSE` before publishing if they differ from the placeholders.
 

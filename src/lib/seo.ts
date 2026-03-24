@@ -34,7 +34,7 @@ export function buildHomeJsonLd(opts: {
       description,
       url: siteUrl,
       version,
-      license: "https://spdx.org/licenses/MIT.html",
+      license: `https://spdx.org/licenses/${license}.html`,
       programmingLanguage: ["TypeScript"],
       runtimePlatform: "Node.js",
       ...(codeRepository ? { codeRepository } : {}),

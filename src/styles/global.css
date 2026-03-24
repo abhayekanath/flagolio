@@ -192,23 +192,38 @@
   .card:hover {
     @apply z-[2] border-border;
   }
+  .card:focus-visible {
+    @apply z-[2] outline-none;
+  }
+  .card:focus-visible .thumb__clip {
+    @apply rounded-sm ring-2 ring-ring/70 ring-offset-2 ring-offset-[#0f0f0f];
+  }
+  .card--active {
+    @apply z-[3];
+  }
+  .card--active .thumb__clip {
+    @apply rounded-sm ring-2 ring-primary/70 ring-offset-2 ring-offset-[#0f0f0f];
+  }
   .card[hidden] {
     @apply hidden;
   }
   .thumb {
-    @apply relative flex w-full flex-col items-center justify-center;
+    @apply relative flex w-full flex-col items-center justify-center origin-center transition-transform duration-200 ease-out motion-reduce:transition-none;
+  }
+  .card:hover .thumb {
+    @apply motion-safe:scale-[1.1] z-[1];
   }
   .thumb__clip {
     @apply w-full overflow-hidden rounded-sm;
   }
-  .thumb--1x1 {
+  .thumb--square {
     @apply mx-auto aspect-square p-0;
     min-height: unset;
   }
-  .thumb--1x1 .thumb__clip {
+  .thumb--square .thumb__clip {
     @apply h-full w-full;
   }
-  .thumb--1x1 img {
+  .thumb--square img {
     @apply size-full object-contain;
   }
   .thumb--round {
@@ -224,7 +239,7 @@
   .thumb img {
     @apply block h-auto w-full max-w-full;
   }
-  .thumb--4x3 img {
+  .thumb--default img {
     @apply h-auto max-w-full;
   }
   .flag-code-float {
@@ -237,7 +252,7 @@
     @apply shrink-0 text-[20px] text-muted-foreground;
   }
   .flag-code-float__code {
-    @apply min-w-0 flex-1 font-mono text-[15px] font-medium tracking-wide text-foreground;
+    @apply min-w-0 flex-1 overflow-x-auto font-mono text-[13px] font-medium leading-snug tracking-wide text-foreground sm:text-[14px];
   }
   .flag-code-float__btn {
     @apply flex size-[36px] shrink-0 cursor-pointer items-center justify-center rounded-[8px] border border-border bg-secondary text-foreground transition hover:bg-muted hover:text-accent-foreground;
